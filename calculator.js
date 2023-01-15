@@ -320,6 +320,9 @@ divvy.addEventListener("click", function() {
         topbar.innerHTML = value;
         mode = 4;
     }
+    else if (topbar.innerHTML.includes("+" || "x" || "-") === true) {
+        // Do nothing
+    }
     else if (valueB !== null && value !== 0) {
         mode = 4;
         operate();
@@ -343,6 +346,9 @@ multiplier.addEventListener("click", function() {
         value = value + " x ";
         topbar.innerHTML = value;
         mode = 3;
+    }
+    else if (topbar.innerHTML.includes("+" || "/" || "-") === true) {
+        // Do nothing
     }
     else if (valueB !== null && value !== 0) {
         mode = 3;
@@ -368,6 +374,9 @@ subtractor.addEventListener("click", function() {
         topbar.innerHTML = value;
         mode = 2;
     }
+    else if (topbar.innerHTML.includes("+" || "x" || "/") === true) {
+        // Do nothing
+    }
     else if (valueB !== null && value !== 0) {
         mode = 2;
         operate();
@@ -391,6 +400,9 @@ plus.addEventListener("click", function() {
         value = value + " + ";
         topbar.innerHTML = value;
         mode = 1;
+    }
+    else if (topbar.innerHTML.includes("/" || "x" || "-") === true) {
+        // Do nothing
     }
     else if (valueB !== null && value !== 0) {
         mode = 1;
@@ -663,6 +675,9 @@ addEventListener('keydown', function(event) {
         topbar.innerHTML = value;
         mode = 4;
     }
+    else if (event.key === "/" && topbar.innerHTML.includes("+" || "x" || "-") === true) {
+        // Do nothing
+    }
     else if (event.key === "/" && valueB !== null && value !== 0) {
         mode = 4;
         operate();
@@ -686,6 +701,9 @@ addEventListener('keydown', function(event) {
         value = value + " x ";
         topbar.innerHTML = value;
         mode = 3;
+    }
+    else if (event.key === "*" && topbar.innerHTML.includes("+" || "-" || "/") === true) {
+        // Do nothing
     }
     else if (event.key === "*" && valueB !== null && value !== 0) {
         mode = 3;
@@ -711,6 +729,9 @@ addEventListener('keydown', function(event) {
         topbar.innerHTML = value;
         mode = 1;
     }
+    else if (event.key === "+" && topbar.innerHTML.includes("-" || "x" || "/") === true) {
+        // Do nothing
+    }
     else if (event.key === "+" && valueB !== null && value !== 0) {
         mode = 1;
         operate();
@@ -734,6 +755,9 @@ addEventListener('keydown', function(event) {
         value = value + " - ";
         topbar.innerHTML = value;
         mode = 2;
+    }
+    else if (event.key === "-" && topbar.innerHTML.includes("+" || "x" || "/") === true) {
+        // Do nothing
     }
     else if (event.key === "-" && valueB !== null && value !== 0) {
         mode = 2;
@@ -769,19 +793,37 @@ addEventListener('keydown', function(event) {
 });
 
 addEventListener('keydown', function(event) {
-    if ((event.key === "=" || event.key === "Enter") && value === 0 && valueB === null) {
+    if (event.key === "=" && value === 0 && valueB === null) {
         value = 0;
         topbar.innerHTML = value;
     }
-    else if ((event.key === "=" || event.key === "Enter") && topbar.innerHTML.includes("=") === true) {
+    else if (event.key === "=" && topbar.innerHTML.includes("=") === true) {
         // Do nothing;
     }
-    else if ((event.key === "=" || event.key === "Enter") && value !== 0 && valueB === null) {
+    else if (event.key === "=" && value !== 0 && valueB === null) {
         valueB = 0;
         equation.innerHTML = valueB;
         topbar.innerHTML = value;
     }
-    else if ((event.key === "=" || event.key === "Enter") && valueB !== null && valueB !== 0 && value !== 0) {
+    else if (event.key === "=" && valueB !== null && valueB !== 0 && value !== 0) {
+        operate();
+    }
+});
+
+addEventListener('keydown', function(event) {
+    if (event.key === "Enter" && value === 0 && valueB === null) {
+        value = 0;
+        topbar.innerHTML = value;
+    }
+    else if (event.key === "Enter" && topbar.innerHTML.includes("=") === true) {
+        // Do nothing;
+    }
+    else if (event.key === "Enter" && value !== 0 && valueB === null) {
+        valueB = 0;
+        equation.innerHTML = valueB;
+        topbar.innerHTML = value;
+    }
+    else if (event.key === "Enter" && valueB !== null && valueB !== 0 && value !== 0) {
         operate();
     }
 });
