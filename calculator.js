@@ -1,4 +1,4 @@
-// Set-up buttons
+// Set-up buttons & variables
 var one = document.getElementById('one');
 var two = document.getElementById('two');
 var three = document.getElementById('three');
@@ -19,11 +19,13 @@ var multiplier = document.getElementById('multiply');
 var divvy = document.getElementById('divvy');
 var topbar = document.getElementById('top-bar');
 var equation = document.getElementById('equation');
+let value = 0;
+let valueB = null;
+let mode = null;
 
 // Set-up calculator screen
 var screen = document.getElementById('calcScreen');
-let value = 0;
-let valueB = null;
+
 equation.innerHTML = value;
 
 // Clear button
@@ -32,7 +34,18 @@ clear.addEventListener("click", function() {
     valueB = null;
     equation.innerHTML = value;
     topbar.innerHTML = null;
+    mode = null;
     });
+
+addEventListener('keydown', function(event) {
+    if (event.key === "Escape") {
+        value = 0;
+        valueB = null;
+        equation.innerHTML = value;
+        topbar.innerHTML = null;
+        mode = null;
+    }
+})
 
 // Button clicks
 one.addEventListener("click", function() {
@@ -243,16 +256,21 @@ zero.addEventListener("click", function() {
     }
 });
 
-
 point.addEventListener("click", function() {
     if (value === 0 && valueB === null) {
         equation.innerHTML = null;
         value = ".";
         equation.innerHTML = value;
     }
+    else if (value.includes(".") === true && valueB === null) {
+        // Do nothing
+    }
     else if (value !== 0 && valueB === null) {
         value = value + ".";
         equation.innerHTML = value;
+    }
+    else if (valueB !== null && valueB !== 0 && valueB !== null && valueB.includes(".") === true) {
+        // Do nothing
     }
     else if (valueB !== null && valueB !== 0 && valueB !== null) {
         valueB = valueB + ".";
@@ -284,22 +302,107 @@ del.addEventListener("click", function() {
 
 divvy.addEventListener("click", function() {
     if (value === 0) {
-        // Do nothing
+        valueB = 0;
+        equation.innerHTML = valueB;
+        value = value + " / ";
+        topbar.innerHTML = value;
+        mode = 4;
+    }
+    else if (topbar.innerHTML.includes("=") === true) {
+        // Do nothing;
     }
     else if (value !== 0 && valueB === null) {
         valueB = 0;
         equation.innerHTML = valueB;
         value = value + " / ";
         topbar.innerHTML = value;
+        mode = 4;
     }
-    // else if (valueB !== null && value !== 0) {
-    //     // Put in code later to make this run the equate() function
-    // }
+    else if (valueB !== null && value !== 0) {
+        mode = 4;
+        operate();
+    }
 });
 
 multiplier.addEventListener("click", function() {
     if (value === 0) {
-        // Do nothing
+        valueB = 0;
+        equation.innerHTML = valueB;
+        value = value + " x ";
+        topbar.innerHTML = value;
+        mode = 3;
+    }
+    else if (topbar.innerHTML.includes("=") === true) {
+        // Do nothing;
+    }
+    else if (value !== 0 && valueB === null) {
+        valueB = 0;
+        equation.innerHTML = valueB;
+        value = value + " x ";
+        topbar.innerHTML = value;
+        mode = 3;
+    }
+    else if (valueB !== null && value !== 0) {
+        mode = 3;
+        operate();
+    }
+});
+
+subtractor.addEventListener("click", function() {
+    if (value === 0) {
+        valueB = 0;
+        equation.innerHTML = valueB;
+        value = value + " - ";
+        topbar.innerHTML = value;
+        mode = 2;
+    }
+    else if (topbar.innerHTML.includes("=") === true) {
+        // Do nothing;
+    }
+    else if (value !== 0 && valueB === null) {
+        valueB = 0;
+        equation.innerHTML = valueB;
+        value = value + " - ";
+        topbar.innerHTML = value;
+        mode = 2;
+    }
+    else if (valueB !== null && value !== 0) {
+        mode = 2;
+        operate();
+    }
+});
+
+plus.addEventListener("click", function() {
+    if (value === 0) {
+        valueB = 0;
+        equation.innerHTML = valueB;
+        value = value + " + ";
+        topbar.innerHTML = value;
+        mode = 1;
+    }
+    else if (topbar.innerHTML.includes("=") === true) {
+        // Do nothing;
+    }
+    else if (value !== 0 && valueB === null) {
+        valueB = 0;
+        equation.innerHTML = valueB;
+        value = value + " + ";
+        topbar.innerHTML = value;
+        mode = 1;
+    }
+    else if (valueB !== null && value !== 0) {
+        mode = 1;
+        operate();
+    }
+});
+
+equal.addEventListener("click", function() {
+    if (value === 0 && valueB === null) {
+        value = 0;
+        topbar.innerHTML = value;
+    }
+    else if (topbar.innerHTML.includes("=") === true) {
+        // Do nothing;
     }
     else if (value !== 0 && valueB === null) {
         valueB = 0;
@@ -307,42 +410,10 @@ multiplier.addEventListener("click", function() {
         value = value + " x ";
         topbar.innerHTML = value;
     }
-    // else if (valueB !== null && value !== 0) {
-    //     // Put in code later to make this run the equate() function
-    // }
-});
-
-subtractor.addEventListener("click", function() {
-    if (value === 0) {
-        // Do nothing
+    else if (valueB !== null && value !== 0) {
+        operate();
     }
-    else if (value !== 0 && valueB === null) {
-        valueB = 0;
-        equation.innerHTML = valueB;
-        value = value + " - ";
-        topbar.innerHTML = value;
-    }
-    // else if (valueB !== null && value !== 0) {
-    //     // Put in code later to make this run the equate() function
-    // }
-});
-
-plus.addEventListener("click", function() {
-    if (value === 0) {
-        // Do nothing
-    }
-    else if (value !== 0 && valueB === null) {
-        valueB = 0;
-        equation.innerHTML = valueB;
-        value = value + " + ";
-        topbar.innerHTML = value;
-    }
-    // else if (valueB !== null && value !== 0) {
-    //     // Put in code later to make this run the equate() function
-    // }
-});
-
-
+})
 
 // Key presses
 addEventListener("keypress", function(event) {
@@ -574,73 +645,115 @@ addEventListener('keydown', function(event) {
 
 addEventListener('keydown', function(event) {
     if (event.key === "/" && value === 0) {
-        // Do nothing
+        valueB = 0;
+        equation.innerHTML = valueB;
+        value = value + " / ";
+        topbar.innerHTML = value;
+        mode = 4;
+    }
+    else if (event.key === "/" && topbar.innerHTML.includes("=") === true) {
+        // Do nothing;
     }
     else if (event.key === "/" && value !== 0 && valueB === null) {
         valueB = 0;
         equation.innerHTML = valueB;
         value = value + " / ";
         topbar.innerHTML = value;
+        mode = 4;
     }
-    // else if (event.key === "/" && valueB !== null && value !== 0) {
-    //     // Put in code later to make this run the equate() function
-    //}
+    else if (event.key === "/" && valueB !== null && value !== 0) {
+        mode = 4;
+        operate();
+    }
 });
 
 addEventListener('keydown', function(event) {
     if (event.key === "*" && value === 0) {
-        // Do nothing
+        valueB = 0;
+        equation.innerHTML = valueB;
+        value = value + " x ";
+        topbar.innerHTML = value;
+        mode = 3;
+    }
+    else if (event.key === "*" && topbar.innerHTML.includes("=") === true) {
+        // Do nothing;
     }
     else if (event.key === "*" && value !== 0 && valueB === null) {
         valueB = 0;
         equation.innerHTML = valueB;
-        value = value + " * ";
+        value = value + " x ";
         topbar.innerHTML = value;
+        mode = 3;
     }
-    // else if (event.key === "/" && valueB !== null && value !== 0) {
-    //     // Put in code later to make this run the equate() function
-    //}
+    else if (event.key === "*" && valueB !== null && value !== 0) {
+        mode = 3;
+        operate();
+    }
 });
 
 addEventListener('keydown', function(event) {
     if (event.key === "+" && value === 0) {
-        // Do nothing
+        valueB = 0;
+        equation.innerHTML = valueB;
+        value = value + " + ";
+        topbar.innerHTML = value;
+        mode = 1;
+    }
+    else if (event.key === "+" && topbar.innerHTML.includes("=") === true) {
+        // Do nothing;
     }
     else if (event.key === "+" && value !== 0 && valueB === null) {
         valueB = 0;
         equation.innerHTML = valueB;
         value = value + " + ";
         topbar.innerHTML = value;
+        mode = 1;
     }
-    // else if (event.key === "/" && valueB !== null && value !== 0) {
-    //     // Put in code later to make this run the equate() function
-    //}
+    else if (event.key === "+" && valueB !== null && value !== 0) {
+        mode = 1;
+        operate();
+    }
 });
 
 addEventListener('keydown', function(event) {
     if (event.key === "-" && value === 0) {
-        // Do nothing
+        valueB = 0;
+        equation.innerHTML = valueB;
+        value = value + " - ";
+        topbar.innerHTML = value;
+        mode = 2;
+    }
+    else if (event.key === "-" && topbar.innerHTML.includes("=") === true) {
+        // Do nothing;
     }
     else if (event.key === "-" && value !== 0 && valueB === null) {
         valueB = 0;
         equation.innerHTML = valueB;
         value = value + " - ";
         topbar.innerHTML = value;
+        mode = 2;
     }
-    // else if (event.key === "/" && valueB !== null && value !== 0) {
-    //     // Put in code later to make this run the equate() function
-    //}
+    else if (event.key === "-" && valueB !== null && value !== 0) {
+        mode = 2;
+        operate();
+    }
 });
 
 addEventListener('keydown', function(event) {
     if (event.key === "." && value === 0 && valueB === null) {
         equation.innerHTML = null;
-        value = "0";
+        value = ".";
         equation.innerHTML = value;
+    }
+    else if (event.key === "." && (value.includes(".") === true && valueB === null)) {
+        // Do nothing
     }
     else if (event.key === "." && value !== 0 && valueB === null) {
         value = value + ".";
         equation.innerHTML = value;
+    }
+    else if (event.key === "." && (valueB !== null && valueB !== 0 && valueB !== null && valueB.includes(".") === true)) {
+        // Do nothing
     }
     else if (event.key === "." && valueB !== null && valueB !== 0 && valueB !== null) {
         valueB = valueB + ".";
@@ -653,30 +766,70 @@ addEventListener('keydown', function(event) {
     }
 });
 
+addEventListener('keydown', function(event) {
+    if ((event.key === "=" || event.key === "Enter") && value === 0 && valueB === null) {
+        value = 0;
+        topbar.innerHTML = value;
+    }
+    else if ((event.key === "=" || event.key === "Enter") && topbar.innerHTML.includes("=") === true) {
+        // Do nothing;
+    }
+    else if ((event.key === "=" || event.key === "Enter") && value !== 0 && valueB === null) {
+        valueB = 0;
+        equation.innerHTML = valueB;
+        value = value + " x ";
+        topbar.innerHTML = value;
+    }
+    else if ((event.key === "=" || event.key === "Enter") && valueB !== null && value !== 0) {
+        operate();
+    }
+});
+
 // Add function
-function add(a, b) {
-    return a + b;
+function add(value, valueB) {
+    var result = (value + valueB);
+    topbar.style.fontSize = "x-large";
+    topbar.innerHTML = value + " + " + valueB + " = " + result;
   }
 
 // Subtract function
-function subtract(a, b) {
-    return a - b;
+function subtract(value, valueB) {
+    var result = (value - valueB);
+    topbar.style.fontSize = "x-large";
+    topbar.innerHTML = value + " - " + valueB + " = " + result;
 }
 
 // Multiply function
-function multiply(a, b) {
-    return a * b;
+function multiply(value, valueB) {
+    var result = (value * valueB);
+    topbar.style.fontSize = "x-large";
+    topbar.innerHTML = value + " x " + valueB + " = " + result;
 }
 
 // Divide function
-function divide(a, b) {
-    return a / b;
+function divide(value, valueB) {
+    var result = (value / valueB);
+    topbar.style.fontSize = "x-large";
+    topbar.innerHTML = value + " / " + valueB + " = " + result;
 }
 
-// Set-up operator buttons
-
-
 // Operate function
-function operate(a, b) {
-
+function operate(value, valueB) {
+    value = equation.innerHTML;
+    valueB = topbar.innerHTML;
+    valueB = valueB.substring(0, valueB.length - 3);
+    parseFloat(value);
+    parseFloat(valueB);
+    if (mode === 1) {
+        add(value, valueB);
+    }
+    else if (mode === 2) {
+        subtract(value, valueB);
+    }
+    else if (mode === 3) {
+        multiply(value, valueB);
+    }
+    else if (mode === 4) {
+        divide(value, valueB);
+    }
 }
