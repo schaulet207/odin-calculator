@@ -49,11 +49,13 @@ addEventListener('keydown', function(event) {
 
 // Button clicks
 one.addEventListener("click", function() {
+        // If both values are empty
     if (value === 0 && valueB === null) {
         equation.innerHTML = null;
         value = 1;
         equation.innerHTML = value;
     }
+        // If 
     else if (value !== 0 && valueB === null) {
         value = value + "1";
         equation.innerHTML = value;
@@ -777,40 +779,47 @@ addEventListener('keydown', function(event) {
     else if ((event.key === "=" || event.key === "Enter") && value !== 0 && valueB === null) {
         valueB = 0;
         equation.innerHTML = valueB;
-        value = value + " x ";
         topbar.innerHTML = value;
     }
-    else if ((event.key === "=" || event.key === "Enter") && valueB !== null && value !== 0) {
+    else if ((event.key === "=" || event.key === "Enter") && valueB !== null && valueB !== 0 && value !== 0) {
         operate();
     }
 });
 
 // Add function
 function add(value, valueB) {
-    var result = (value + valueB);
+    var value1 = parseFloat(value);
+    var value2 = parseFloat(valueB);
+    var result = (value2 + value1);
     topbar.style.fontSize = "x-large";
-    topbar.innerHTML = value + " + " + valueB + " = " + result;
+    topbar.innerHTML = value2 + " + " + value1 + " = " + result;
   }
 
 // Subtract function
 function subtract(value, valueB) {
-    var result = (value - valueB);
+    var value1 = parseFloat(value);
+    var value2 = parseFloat(valueB);
+    var result = (value2 - value1);
     topbar.style.fontSize = "x-large";
-    topbar.innerHTML = value + " - " + valueB + " = " + result;
+    topbar.innerHTML = value2 + " - " + value1 + " = " + result;
 }
 
 // Multiply function
 function multiply(value, valueB) {
-    var result = (value * valueB);
+    var value1 = parseFloat(value);
+    var value2 = parseFloat(valueB);
+    var result = (value2 * value1);
     topbar.style.fontSize = "x-large";
-    topbar.innerHTML = value + " x " + valueB + " = " + result;
+    topbar.innerHTML = value2 + " * " + value1 + " = " + result;
 }
 
 // Divide function
 function divide(value, valueB) {
-    var result = (value / valueB);
+    var value1 = parseFloat(value);
+    var value2 = parseFloat(valueB);
+    var result = (value2 / value1);
     topbar.style.fontSize = "x-large";
-    topbar.innerHTML = value + " / " + valueB + " = " + result;
+    topbar.innerHTML = value2 + " / " + value1 + " = " + result;
 }
 
 // Operate function
@@ -818,18 +827,28 @@ function operate(value, valueB) {
     value = equation.innerHTML;
     valueB = topbar.innerHTML;
     valueB = valueB.substring(0, valueB.length - 3);
-    parseFloat(value);
-    parseFloat(valueB);
     if (mode === 1) {
         add(value, valueB);
+        value = 0;
+        valueB = null;
+        mode = null;
     }
     else if (mode === 2) {
         subtract(value, valueB);
+        value = 0;
+        valueB = null;
+        mode = null;
     }
     else if (mode === 3) {
         multiply(value, valueB);
+        value = 0;
+        valueB = null;
+        mode = null;
     }
     else if (mode === 4) {
         divide(value, valueB);
+        value = 0;
+        valueB = null;
+        mode = null;
     }
 }
