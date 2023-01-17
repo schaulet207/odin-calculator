@@ -320,12 +320,18 @@ divvy.addEventListener("click", function() {
         topbar.innerHTML = value;
         mode = 4;
     }
-    else if (topbar.innerHTML.includes("+" || "x" || "-") === true) {
-        // Do nothing
+    else if (topbar.innerHTML.includes("+" || "x" || "-" || "/") === true) {
+        operate();
+        topbar.innerHTML = result + " / ";
+        equation.innerHTML = result;
+        valueB = result;
     }
     else if (valueB !== null && value !== 0) {
         mode = 4;
         operate();
+        topbar.innerHTML = result + " / ";
+        equation.innerHTML = result;
+        valueB = result;
     }
 });
 
@@ -347,12 +353,18 @@ multiplier.addEventListener("click", function() {
         topbar.innerHTML = value;
         mode = 3;
     }
-    else if (topbar.innerHTML.includes("+" || "/" || "-") === true) {
-        // Do nothing
+    else if (topbar.innerHTML.includes("+" || "x" || "-" || "/")  === true) {
+        operate();
+        topbar.innerHTML = result + " * ";
+        equation.innerHTML = result;
+        valueB = result;
     }
     else if (valueB !== null && value !== 0) {
         mode = 3;
         operate();
+        topbar.innerHTML = result + " * ";
+        equation.innerHTML = result;
+        valueB = result;
     }
 });
 
@@ -374,12 +386,18 @@ subtractor.addEventListener("click", function() {
         topbar.innerHTML = value;
         mode = 2;
     }
-    else if (topbar.innerHTML.includes("+" || "x" || "/") === true) {
-        // Do nothing
+    else if (topbar.innerHTML.includes("+" || "x" || "-" || "/")  === true) {
+        operate();
+        topbar.innerHTML = result + " - ";
+        equation.innerHTML = result;
+        valueB = result;
     }
     else if (valueB !== null && value !== 0) {
         mode = 2;
         operate();
+        topbar.innerHTML = result + " - ";
+        equation.innerHTML = result;
+        valueB = result;
     }
 });
 
@@ -401,12 +419,18 @@ plus.addEventListener("click", function() {
         topbar.innerHTML = value;
         mode = 1;
     }
-    else if (topbar.innerHTML.includes("/" || "x" || "-") === true) {
-        // Do nothing
+    else if (topbar.innerHTML.includes("+" || "x" || "-" || "/")  === true) {
+        operate();
+        topbar.innerHTML = result + " + ";
+        equation.innerHTML = result;
+        valueB = result;
     }
     else if (valueB !== null && value !== 0) {
         mode = 1;
         operate();
+        topbar.innerHTML = result + " + ";
+        equation.innerHTML = result;
+        valueB = result;
     }
 });
 
@@ -675,12 +699,24 @@ addEventListener('keydown', function(event) {
         topbar.innerHTML = value;
         mode = 4;
     }
-    else if (event.key === "/" && topbar.innerHTML.includes("+" || "x" || "-") === true) {
-        // Do nothing
+    else if (event.key === "/" && topbar.innerHTML.includes("+" || "x" || "-" || "/") === true) {
+        operate();
+        topbar.innerHTML = result + " / ";
+        equation.innerHTML = result;
+        valueB = result;
     }
     else if (event.key === "/" && valueB !== null && value !== 0) {
         mode = 4;
         operate();
+        if ((value1 === 0)|| (value2 === 0)) {
+            equation.innerHTML = "You can't do that Einstein";
+        }
+        else {
+        console.log("case2")
+        topbar.innerHTML = result + " / ";
+        equation.innerHTML = result;
+        valueB = result;
+        }
     }
 });
 
@@ -702,12 +738,18 @@ addEventListener('keydown', function(event) {
         topbar.innerHTML = value;
         mode = 3;
     }
-    else if (event.key === "*" && topbar.innerHTML.includes("+" || "-" || "/") === true) {
-        // Do nothing
+    else if (event.key === "*" && topbar.innerHTML.includes("+" || "x" || "-" || "/")  === true) {
+        operate();
+        topbar.innerHTML = result + " * ";
+        equation.innerHTML = result;
+        valueB = result;
     }
     else if (event.key === "*" && valueB !== null && value !== 0) {
         mode = 3;
         operate();
+        topbar.innerHTML = result + " * ";
+        equation.innerHTML = result;
+        valueB = result;
     }
 });
 
@@ -729,12 +771,18 @@ addEventListener('keydown', function(event) {
         topbar.innerHTML = value;
         mode = 1;
     }
-    else if (event.key === "+" && topbar.innerHTML.includes("-" || "x" || "/") === true) {
-        // Do nothing
+    else if (event.key === "+" && topbar.innerHTML.includes("+" || "x" || "-" || "/")  === true) {
+        operate();
+        topbar.innerHTML = result + " + ";
+        equation.innerHTML = result;
+        valueB = result;
     }
     else if (event.key === "+" && valueB !== null && value !== 0) {
         mode = 1;
         operate();
+        topbar.innerHTML = result + " + ";
+        equation.innerHTML = result;
+        valueB = result;
     }
 });
 
@@ -756,12 +804,17 @@ addEventListener('keydown', function(event) {
         topbar.innerHTML = value;
         mode = 2;
     }
-    else if (event.key === "-" && topbar.innerHTML.includes("+" || "x" || "/") === true) {
-        // Do nothing
+    else if (event.key === "-" && topbar.innerHTML.includes("+" || "x" || "-" || "/")  === true) {
+        operate();
+        topbar.innerHTML = result + " - ";
+        equation.innerHTML = result;
+        valueB = result;
     }
     else if (event.key === "-" && valueB !== null && value !== 0) {
-        mode = 2;
         operate();
+        topbar.innerHTML = result + " - ";
+        equation.innerHTML = result;
+        valueB = result;
     }
 });
 
@@ -804,9 +857,11 @@ addEventListener('keydown', function(event) {
         valueB = 0;
         equation.innerHTML = valueB;
         topbar.innerHTML = value;
+        console.log("case")
     }
     else if (event.key === "=" && valueB !== null && valueB !== 0 && value !== 0) {
         operate();
+        console.log("case1")
     }
 });
 
@@ -826,42 +881,81 @@ addEventListener('keydown', function(event) {
     else if (event.key === "Enter" && valueB !== null && valueB !== 0 && value !== 0) {
         operate();
     }
+    else if (event.key === "Enter" && value !== 0 && valueB === 0) {
+        operate();
+    }
 });
 
 // Add function
 function add(value, valueB) {
-    var value1 = parseFloat(value);
-    var value2 = parseFloat(valueB);
-    var result = (value2 + value1);
-    topbar.style.fontSize = "x-large";
-    topbar.innerHTML = value2 + " + " + value1 + " = " + result;
+    if (valueB === null) {
+        valueB = 0;
+        value1 = parseFloat(value);
+        value2 = parseFloat(valueB);
+        result = (value2 + value1);
+        topbar.style.fontSize = "x-large";
+        topbar.innerHTML = value2 + " + " + value1 + " = " + result;
+    }
+    else {
+        value1 = parseFloat(value);
+        value2 = parseFloat(valueB);
+        result = (value2 + value1);
+        topbar.style.fontSize = "x-large";
+        topbar.innerHTML = value2 + " + " + value1 + " = " + result;
+    }
   }
 
 // Subtract function
 function subtract(value, valueB) {
-    var value1 = parseFloat(value);
-    var value2 = parseFloat(valueB);
-    var result = (value2 - value1);
-    topbar.style.fontSize = "x-large";
-    topbar.innerHTML = value2 + " - " + value1 + " = " + result;
+    if (valueB === null) {
+        valueB = 0;
+        value1 = parseFloat(value);
+        value2 = parseFloat(valueB);
+        result = (value2 - value1);
+        topbar.style.fontSize = "x-large";
+        topbar.innerHTML = value2 + " - " + value1 + " = " + result;
+    }
+    else {
+        value1 = parseFloat(value);
+        value2 = parseFloat(valueB);
+        result = (value2 - value1);
+        topbar.style.fontSize = "x-large";
+        topbar.innerHTML = value2 + " - " + value1 + " = " + result;
+    }
 }
-
 // Multiply function
 function multiply(value, valueB) {
-    var value1 = parseFloat(value);
-    var value2 = parseFloat(valueB);
-    var result = (value2 * value1);
-    topbar.style.fontSize = "x-large";
-    topbar.innerHTML = value2 + " * " + value1 + " = " + result;
+    if (valueB === null) {
+        valueB = 0;
+        value1 = parseFloat(value);
+        value2 = parseFloat(valueB);
+        result = (value2 * value1);
+        topbar.style.fontSize = "x-large";
+        topbar.innerHTML = value2 + " x " + value1 + " = " + result;
+    }
+    else {
+        value1 = parseFloat(value);
+        value2 = parseFloat(valueB);
+        result = (value2 * value1);
+        topbar.style.fontSize = "x-large";
+        topbar.innerHTML = value2 + " x " + value1 + " = " + result;
+    }
 }
 
 // Divide function
 function divide(value, valueB) {
-    var value1 = parseFloat(value);
-    var value2 = parseFloat(valueB);
-    var result = (value2 / value1);
+    value1 = parseFloat(value);
+    value2 = parseFloat(valueB);
+    result = (value2 / value1);
+    console.log(value1);
+    console.log(value2);
+    if ((value1 === 0)|| (value2 === 0)) {
+        equation.innerHTML = "You can't do that Einstein";
+    }
+    else {
     topbar.style.fontSize = "x-large";
     topbar.innerHTML = value2 + " / " + value1 + " = " + result;
+    }
 }
 
 // Operate function
